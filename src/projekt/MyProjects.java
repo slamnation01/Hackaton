@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import baza.LoggedUser;
 
@@ -60,8 +61,17 @@ public class MyProjects implements ActionListener{
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent e) {
+
+		if (e.getSource() == buttonsArray.get(0))
+		{	
+			//Przeskok do projektu 1
+		}
+		
+		if (e.getSource() == buttonsArray.get(1))
+		{	
+			//Przeskok do projektu 2
+		}
 		
 	}
 
