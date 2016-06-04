@@ -1,4 +1,4 @@
-package main;
+package layout;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -14,26 +14,23 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
+import baza.LoggedUser;
 import baza.Login;
+import projekt.NewProject;
 
-public class Menu extends JFrame implements ActionListener {
-
+public class Menu extends MainFrame implements ActionListener {
 	private JLabel napis1, napis2, napis3,napis4,napis5,napis6;
     private JTextField temat, login;
-    private JButton zaloguj,lista,zatwierdz,powrot;
+    private JButton zaloguj,nowyProjekt,zatwierdz,powrot, harmonogram;
     private JTextArea opis;
     private JScrollPane pane;
     private JPasswordField password;
+    private LoggedUser currentUser = null;
+    private MainFrame glowneOkno;
  
-    public Menu()
+    public Menu(MainFrame glowneOkno)
     {
-    	
-        setTitle("Menu");
-        setVisible(true);
-        setSize(800, 800);
-        setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
+    	this.glowneOkno = glowneOkno;
         napis1 = new JLabel("Podej dane:");
         napis1.setForeground(Color.blue);
         napis1.setFont(new Font("Serif", Font.BOLD, 20));
@@ -46,18 +43,20 @@ public class Menu extends JFrame implements ActionListener {
         temat = new JTextField();
         opis = new JTextArea(10,50);
         zaloguj = new JButton("Dalej");
-        lista = new JButton("Lista");
         zatwierdz = new JButton("Zatwierdz");
         powrot = new JButton("Powrót");
         pane = new JScrollPane(opis);
+        nowyProjekt = new JButton("Nowy projekt");
+        harmonogram = new JButton("Harmonogram");
         
         LoginForm loginPaneForm = new LoginForm();
         login = loginPaneForm.getLogin();
         password = loginPaneForm.getPassword();
+        login.setText("jaszczyk@example.com");
+        password.setText("1111");
         
         pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         
- 
         napis1.setBounds(100, 30, 400, 30);
         napis2.setBounds(80, 70, 200, 30);
         napis3.setBounds(80, 110, 200, 30);
@@ -67,12 +66,13 @@ public class Menu extends JFrame implements ActionListener {
         login.setBounds(300, 70, 200, 30);
         password.setBounds(300, 110, 200, 30);
         zaloguj.setBounds(150, 160, 100, 30);
-        lista.setBounds(100, 100, 100, 100);
+        nowyProjekt.setBounds(100, 100, 125, 125);
+        harmonogram.setBounds(300, 100, 125, 125);
         temat.setBounds(250, 50, 300, 30);
         pane.setBounds(250, 100, 300, 300);
         zatwierdz.setBounds(250, 425, 140, 30);
         powrot.setBounds(410, 425, 140, 30);
-        
+       
         opis.setLineWrap(true);
  
         add(napis1);
@@ -82,7 +82,7 @@ public class Menu extends JFrame implements ActionListener {
         add(password);
         add(zaloguj);
         zaloguj.addActionListener(this);
-        lista.addActionListener(this);
+        nowyProjekt.addActionListener(this);
         zatwierdz.addActionListener(this);
         powrot.addActionListener(this);
         this.setResizable(false);
@@ -91,35 +91,32 @@ public class Menu extends JFrame implements ActionListener {
  
     public void actionPerformed(ActionEvent e)
     {
-        if (e.getSource() == zaloguj){
-        	if (Login.login(login, password)){
-		        remove(napis2);
-		        remove(login);
-		        remove(napis3);
-		        remove(password);
-		        remove(zaloguj);
-		        napis1.setText("Wiaj " + Login.getUsername());
-		        add(lista);
-		        SwingUtilities.updateComponentTreeUI(this);
-        	}
+    	if (e.getSource() == zaloguj){
+	        if (Login.passwordCheck(login, password)){
+			     remove(napis2);
+			     remove(login);
+			     remove(napis3);
+			     remove(password);
+			     remove(zaloguj);
+			     currentUser = LoggedUser.getInstance();
+			     napis1.setText("Wiaj " + LoggedUser.getName());
+			     add(nowyProjekt);
+			     add(harmonogram);
+	        }
         	else {
+        		login.setText("");
         		password.setText("");
         		add(napis6);
         		napis6.setText("Podaj poprawne dane logowania");
         		napis6.setForeground(Color.red);
-		        SwingUtilities.updateComponentTreeUI(this);
 			}
-        }
-        
-        if (e.getSource() == lista)
+	        SwingUtilities.updateComponentTreeUI(this);
+    	}
+        if (e.getSource() == nowyProjekt)
         {
-        	add(napis4);
-        	add(napis5);
-        	add(temat);
-        	add(pane);
-        	add(zatwierdz);
-        	add(powrot);
-        	remove(lista);
+        	remove(nowyProjekt);
+        	remove(harmonogram);
+        	new NewProject(glowneOkno);
         	SwingUtilities.updateComponentTreeUI(this);
         }
         
@@ -137,9 +134,10 @@ public class Menu extends JFrame implements ActionListener {
         	remove(napis5);
         	remove(powrot);
         	remove(pane);
-        	add(lista);
+        	add(nowyProjekt);
         	remove(temat);
         	remove(opis);
+        	add(harmonogram);
         	
         	SwingUtilities.updateComponentTreeUI(this);
         }

@@ -3,18 +3,25 @@ package baza;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class Login{
-	private static String sLogin;
+import projekt.CProject;
+
+public abstract class Login extends User{
+	protected static String sLogin;
 	private static String sPassword;
-	private static String username;
 		
-	public static String getUsername() {
-		return DataBase.getInstance().GetUser(sLogin)[1];
+	protected static String[] getLoggedUserData(){
+		return DataBase.getInstance().GetUser(sLogin);
+	}
+	
+	protected static CProject []getLoggedUserProjects(){
+		return null;
 	}
 
-	public static boolean login(JTextField login, JPasswordField password){
+	public static boolean passwordCheck(JTextField login, JPasswordField password){
 		sLogin = login.getText().trim();
 		sPassword = password.getText().trim();
-		return DataBase.getInstance().CheckPassword(sLogin, sPassword);
+		if (!sLogin.isEmpty() || !sPassword.isEmpty())
+			return DataBase.getInstance().CheckPassword(sLogin, sPassword);
+		return false;
 	}
 }

@@ -13,30 +13,33 @@ public class DataBase //implements IDataBase
 	private static ResultSet rs = null;
 
 	 static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	 static final String DB_URL = "sql8.freemysqlhosting.net";
-	 static final String User ="sql8122354";
-	 static final String Password = "ehmNeFqJvx";
-	 
-	 private static DataBase instanceBase = null;
+	 static final String DB_URL = "jdbc:mysql://sql8.freemysqlhosting.net/sql8122359";
+	 static final String User ="sql8122359";
+	 static final String Password = "IyKN3AHaZm";
+	private static DataBase instanceBase = null;
 	
-	 private DataBase(){
-		 Connect();
-	 }
+	
+	
+	 public DataBase()
+		{
+			Connect();
+		}
 	 
-	 public static DataBase getInstance(){
-		 if (instanceBase==null){
+	 public static DataBase getInstance()
+	 {
+		 if (instanceBase == null)
+		 {
 			 instanceBase = new DataBase();
 		 }
 		 return instanceBase;
 	 }
-	 
-	private void Connect()
+	public void Connect()
 	 {
 		try{
 		      Class.forName(JDBC_DRIVER);
 		      conn = DriverManager.getConnection(DB_URL,User,Password);
 		      //conn.createStatement().executeQuery("Select * from STUDENTS");
-
+		      System.out.println("POLACZONO");
 		 }catch(SQLException se){
 		      //Handle errors for JDBC
 		      se.printStackTrace();
@@ -47,16 +50,30 @@ public class DataBase //implements IDataBase
 		   }
 		
 	 }
-	
-	public void CreateTableUsers() throws SQLException
+	public void Disconnect()
 	{
-
-		try{
-		      
-		      conn.createStatement().executeQuery("Create table Users(ID integer NOT NULL AUTO_INCREMENT PRIMARY KEY,surname VARCHAR2(15), name VARCHAR2(10),"
-						+ "password VARCHAR2(10), email VARCHAR2(20)");
-			
-		 }catch(SQLException se){
+		try{  
+		      conn.close();
+		      System.out.println("ROZLACZONO");
+		     
+		}catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		   }
+	}
+	
+	public void CreateTableUsers() 
+	{
+		try{  
+		      stmt=conn.createStatement();
+		     String sql = "Create table Users(ID integer NOT NULL,surname VARCHAR(50), name VARCHAR(50), password VARCHAR(50), email VARCHAR(50));";
+			stmt.executeUpdate(sql);
+			System.out.println("DODANO TABELE");
+		     
+		}catch(SQLException se){
 		      //Handle errors for JDBC
 		      se.printStackTrace();
 		   }catch(Exception e){
@@ -70,8 +87,7 @@ public class DataBase //implements IDataBase
 
 		try{
 		      
-		      conn.createStatement().executeQuery("Create table Projects(ID integer NOT NULL AUTO_INCREMENT PRIMARY KEY,Name VARCHAR2(15), Description VARCHAR2(40),"
-						+ "Users VARCHAR2(10), email VARCHAR2(20)");
+		      conn.createStatement().executeQuery("Create table Projects(ID integer NOT NULL AUTO_INCREMENT PRIMARY KEY,Name VARCHAR2(15), Description VARCHAR2(40),Users VARCHAR2(10), email VARCHAR2(20)");
 			
 		 }catch(SQLException se){
 		      //Handle errors for JDBC
@@ -84,9 +100,7 @@ public class DataBase //implements IDataBase
 	}
 	public void CreateTableList() throws SQLException
 	{
-
-		try{
-		      
+		try{ 
 		      conn.createStatement().executeQuery("Create table Users(ID integer NOT NULL AUTO_INCREMENT PRIMARY KEY,surname VARCHAR2(15), name VARCHAR2(10),"
 						+ "password VARCHAR2(10), email VARCHAR2(20)");
 			
@@ -122,7 +136,31 @@ public class DataBase //implements IDataBase
 	
 	
 	
-
+public void AddNaSztywno()
+{
+	try{
+		//conn.createStatement().executeQuery("Insert Into Users(ID, surname, name, password,email) VALUES (1,'Jaszczyk','Wojciech','1111','jaszczyk@example.com');");
+		//conn.createStatement().executeQuery("Insert Into Users(ID, surname, name, password,email) VALUES (2,'Bochniarz','Wojciech','2222','bochniarz@example.com');");
+		//conn.createStatement().executeQuery("Insert Into Users(ID, surname, name, password,email) VALUES (3,'Baum','Tadeusz','3333','baum@example.com');");
+		//conn.createStatement().executeQuery("Insert Into Users(ID, surname, name, password,email) VALUES (4,'Skrzypiec','Kamil','4444','skrzypiec@example.com');");
+	      
+		stmt = conn.createStatement();
+   	 stmt.executeUpdate("Insert Into Users(ID, surname, name, password,email) VALUES (1,'Jaszczyk','Wojciech','1111','jaszczyk@example.com');");	
+   	stmt.executeUpdate("Insert Into Users(ID, surname, name, password,email) VALUES (2,'Bochniarz','Wojciech','2222','bochniarz@example.com');");	
+   	stmt.executeUpdate("Insert Into Users(ID, surname, name, password,email) VALUES (3,'Baum','Tadeusz','3333','baum@example.com');");	
+   	stmt.executeUpdate("Insert Into Users(ID, surname, name, password,email) VALUES (4,'Skrzypiec','Kamil','4444','skrzypiec@example.com');");	
+   	
+   	 
+   	 
+   	 System.out.println("DODANO UZYTKOWNIKOW");
+	 }catch(SQLException se){
+	      //Handle errors for JDBC
+	      se.printStackTrace();
+	   }catch(Exception e){
+	      //Handle errors for Class.forName
+	      e.printStackTrace();
+	   }
+}
 	
 	public void AddUser(String Surname, String Name, String Password, String Email)
 	{
@@ -141,27 +179,28 @@ public class DataBase //implements IDataBase
 	
 	public boolean CheckPassword(String Login, String Password)
 	{
-		boolean pass=true;
+		boolean pass=false;
 		try{
-		      
-			conn.createStatement().executeQuery("SELECT * FROM STUDENTS WHERE email LIKE " + "'%"+ Login + "%'" + "AND password LIKE "+"'%"+Password+"%' )");
-			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM Users WHERE email LIKE '%"+ Login + "%'" + "AND password LIKE "+"'%"+Password+"%'");
+			if (rs.next())
+				pass=true;
 		 }catch(SQLException se){
-		      pass=false;
 		      se.printStackTrace();
 		   }catch(Exception e){
-		     pass=false;
 		      e.printStackTrace();
 		   }
 		return pass;
 	}
+	
 	public String[] GetUser(String Login)
 	{
 		//String[] Users= new String[2];
-		String[] User = new String[2];
+		String[] User = new String[3];
 		try{
-		 	  String sql = "SELECT * FROM STUDENTS WHERE email LIKE " + "'%"+ Login + "%'";
+		 	  String sql = "SELECT * FROM Users WHERE email LIKE " + "'%"+ Login + "%'";
 		 	  	rs = stmt.executeQuery(sql);
+		 	  	rs.next();
 		 	  	  User[0] = rs.getString("surname");
 		 	  	  User[1] = rs.getString("name");
 		 	  	  User[2] = rs.getString("email");
@@ -175,22 +214,11 @@ public class DataBase //implements IDataBase
 		   }
 		return User;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public void AddProject(String Name, String Description, String[] Users, String[] Lists)
 	{
-		
-		
 		try{
-		      
 		      conn.createStatement().executeQuery("Insert Into Users Values(");
-			
 		 }catch(SQLException se){
 		      //Handle errors for JDBC
 		      se.printStackTrace();
@@ -199,12 +227,27 @@ public class DataBase //implements IDataBase
 		      e.printStackTrace();
 		   }
 		
-		
-		
-		
+	}
+
+	
+	public void DropTable()
+	{
+		try{
+		      
+			stmt = conn.createStatement();
+		   	 stmt.executeUpdate("DROP TABLE Users;");
+		   	
+			 System.out.println("USUNIETO UZYTKOWNIKOW");
+		 }catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		   }
 		
 	}
 	
 	
-
+	
 }
