@@ -6,7 +6,15 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 public class MainFrame extends JFrame{
-	public MainFrame(){
+	private static MainFrame instancjaFrame = null;
+	
+	public static MainFrame getInstance(){
+		if(instancjaFrame==null)
+			instancjaFrame=new MainFrame();
+		return instancjaFrame;
+	}
+	
+	private MainFrame(){
 		setTitle("Witaj w programie WellDone");
         setVisible(true);
 		setSize(SZEROKOSC/2, (WYSOKOSC/2)+100);

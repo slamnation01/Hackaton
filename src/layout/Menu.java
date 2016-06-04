@@ -18,7 +18,7 @@ import baza.LoggedUser;
 import baza.Login;
 import projekt.NewProject;
 
-public class Menu extends MainFrame implements ActionListener {
+public class Menu extends JFrame implements ActionListener {
 	private JLabel napis1, napis2, napis3,napis4,napis5,napis6;
     private JTextField temat, login;
     private JButton zaloguj,nowyProjekt,zatwierdz,powrot, harmonogram;

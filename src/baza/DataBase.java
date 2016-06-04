@@ -5,21 +5,20 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.*;
 
 public class DataBase //implements IDataBase
 {
-	private static Connection conn = null;
-	private static Statement stmt = null;
-	private static ResultSet rs = null;
+	protected Connection conn = null;
+	protected static Statement stmt = null;
+	protected static ResultSet rs = null;
+	protected static String sql = null;
 
 	 static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	 static final String DB_URL = "jdbc:mysql://sql8.freemysqlhosting.net/sql8122359";
 	 static final String User ="sql8122359";
 	 static final String Password = "IyKN3AHaZm";
 	private static DataBase instanceBase = null;
-	
-	
-	
 	 public DataBase()
 		{
 			Connect();
@@ -67,11 +66,14 @@ public class DataBase //implements IDataBase
 	
 	public void CreateTableUsers() 
 	{
+
 		try{  
+			
 		      stmt=conn.createStatement();
-		     String sql = "Create table Users(ID integer NOT NULL,surname VARCHAR(50), name VARCHAR(50), password VARCHAR(50), email VARCHAR(50));";
+		    stmt.executeUpdate("Drop Table users;");
+		      String sql = "Create table users(ID VARCHAR(3) NOT NULL,surname VARCHAR(50), name VARCHAR(50), password VARCHAR(50), email VARCHAR(50));";
 			stmt.executeUpdate(sql);
-			System.out.println("DODANO TABELE");
+			System.out.println("DODANO TABELE USERS");
 		     
 		}catch(SQLException se){
 		      //Handle errors for JDBC
@@ -100,7 +102,9 @@ public class DataBase //implements IDataBase
 	}
 	public void CreateTableList() throws SQLException
 	{
-		try{ 
+
+		try{
+		      
 		      conn.createStatement().executeQuery("Create table Users(ID integer NOT NULL AUTO_INCREMENT PRIMARY KEY,surname VARCHAR2(15), name VARCHAR2(10),"
 						+ "password VARCHAR2(10), email VARCHAR2(20)");
 			
@@ -145,10 +149,10 @@ public void AddNaSztywno()
 		//conn.createStatement().executeQuery("Insert Into Users(ID, surname, name, password,email) VALUES (4,'Skrzypiec','Kamil','4444','skrzypiec@example.com');");
 	      
 		stmt = conn.createStatement();
-   	 stmt.executeUpdate("Insert Into Users(ID, surname, name, password,email) VALUES (1,'Jaszczyk','Wojciech','1111','jaszczyk@example.com');");	
-   	stmt.executeUpdate("Insert Into Users(ID, surname, name, password,email) VALUES (2,'Bochniarz','Wojciech','2222','bochniarz@example.com');");	
-   	stmt.executeUpdate("Insert Into Users(ID, surname, name, password,email) VALUES (3,'Baum','Tadeusz','3333','baum@example.com');");	
-   	stmt.executeUpdate("Insert Into Users(ID, surname, name, password,email) VALUES (4,'Skrzypiec','Kamil','4444','skrzypiec@example.com');");	
+   	 stmt.executeUpdate("Insert Into users(ID, surname, name, password,email) VALUES ('1','Jaszczyk','Wojciech','1111','jaszczyk@example.com');");	
+   	stmt.executeUpdate("Insert Into users(ID, surname, name, password,email) VALUES ('2','Bochniarz','Wojciech','2222','bochniarz@example.com');");	
+   	stmt.executeUpdate("Insert Into users(ID, surname, name, password,email) VALUES ('3','Baum','Tadeusz','3333','baum@example.com');");	
+   	stmt.executeUpdate("Insert Into users(ID, surname, name, password,email) VALUES ('4','Skrzypiec','Kamil','4444','skrzypiec@example.com');");	
    	
    	 
    	 
@@ -214,21 +218,7 @@ public void AddNaSztywno()
 		   }
 		return User;
 	}
-
-	public void AddProject(String Name, String Description, String[] Users, String[] Lists)
-	{
-		try{
-		      conn.createStatement().executeQuery("Insert Into Users Values(");
-		 }catch(SQLException se){
-		      //Handle errors for JDBC
-		      se.printStackTrace();
-		   }catch(Exception e){
-		      //Handle errors for Class.forName
-		      e.printStackTrace();
-		   }
-		
-	}
-
+	
 	
 	public void DropTable()
 	{
