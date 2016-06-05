@@ -1,28 +1,43 @@
 package layout;
 
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
 public class MainFrame extends JFrame{
-	private static MainFrame instancjaFrame = null;
+	private static MainFrame instancjaFrame;
 	
-	public static MainFrame getInstance(){
-		if(instancjaFrame==null)
+	public static MainFrame getInstance() {
+		if (instancjaFrame == null){
 			instancjaFrame=new MainFrame();
+		}
 		return instancjaFrame;
 	}
 	
-	private MainFrame(){
-		setTitle("Witaj w programie WellDone");
-        setVisible(true);
-		setSize(SZEROKOSC/2, (WYSOKOSC/2)+100);
+	private MainFrame() {
+		//setSize(SZEROKOSC/2, (WYSOKOSC/2)+100);
+		setVisible(true);
+		setSize(800,800);
 		setLocation(SZEROKOSC/4, (WYSOKOSC/4)-100);
-        setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Baza studentów");
+		setResizable(false);
+		addWindowListener(new WindowAdapter()
+		{
+			@Override
+		    public void windowClosing(WindowEvent e)
+		    {
+		       dispose();
+		    }
+		});
+
 	}
-	
+	/**
+	 * Prywatna funkcja pobieraj¹ca rozdzielczoœæ ekranu przy pomocy klasy Toolkit.
+	 */
 	private static int pobierzRozdzielczosc(String wymiar){
 		Toolkit zestaw = Toolkit.getDefaultToolkit();
 		Dimension rozmiarEkranu = zestaw.getScreenSize();

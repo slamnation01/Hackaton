@@ -186,7 +186,7 @@ public void AddNaSztywno()
 		boolean pass=false;
 		try{
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM Users WHERE email LIKE '%"+ Login + "%'" + "AND password LIKE "+"'%"+Password+"%'");
+			rs = stmt.executeQuery("SELECT * FROM users WHERE email LIKE '%"+ Login + "%'" + "AND password LIKE "+"'%"+Password+"%'");
 			if (rs.next())
 				pass=true;
 		 }catch(SQLException se){

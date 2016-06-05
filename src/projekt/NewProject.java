@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -12,7 +13,6 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import baza.User;
-import layout.MainFrame;
 import main.CList;
 
 public class NewProject implements ActionListener{
@@ -27,7 +27,7 @@ public class NewProject implements ActionListener{
 	protected JTextField newListFormName;
 	protected JTextArea newListFormDesc;
 	private JScrollPane ListFormDescScroll;
-	private JPanel jPanel;
+	private JFrame uchwyt;
 	
 	//FIX ME: tworzenie usera musi byc gdzies przy loginie i nie na sztywno
 	public User loggedUser = new User("Jan", "Kowalski", "jankowal@gmail.com");
@@ -36,10 +36,9 @@ public class NewProject implements ActionListener{
 	public CProject currentProject = new CProject("Projekt1", loggedUser);
 	public CList tempList;
 	
-	public NewProject(MainFrame uchwyt)
+	public NewProject(JFrame uchwyt)
 	{
-		jPanel = new JPanel();
-        uchwyt.add(jPanel);
+		this.uchwyt = uchwyt;
         loggedUser.setCurrentProject(currentProject);       
         projectNameString = loggedUser.getCurrentProject().getProjectName();
         
@@ -60,7 +59,7 @@ public class NewProject implements ActionListener{
 	{
         projectName = new JLabel(projectNameString);        
         projectName.setBounds(100, 30, 400, 30);       
-        jPanel.add(projectName);	
+        uchwyt.add(projectName);	
 	}
 	
 	public void DrawListButton()
@@ -68,31 +67,31 @@ public class NewProject implements ActionListener{
         createNewList = new JButton("Stworz nowa liste");
         createNewList.setBounds(180, 30, 400, 30);
         createNewList.addActionListener(this);
-        jPanel.add(createNewList);
+        uchwyt.add(createNewList);
 	}
 	
 	public void DrawNewListForm()
 	{
 		newListFormName = new JTextField();
 		newListFormName.setBounds(100, 80, 500, 30);
-		jPanel.add(newListFormName);
+		uchwyt.add(newListFormName);
 		
 		newListFormDesc = new JTextArea();
 		
 		ListFormDescScroll = new JScrollPane(newListFormDesc);
 		ListFormDescScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		ListFormDescScroll.setBounds(100, 120, 500, 120);
-		jPanel.add(ListFormDescScroll);
+		uchwyt.add(ListFormDescScroll);
 		
 		newListAcceptButton = new JButton("Dodaj liste");
 		newListAcceptButton.setBounds(100, 240, 200, 30);
 		newListAcceptButton.addActionListener(this);
-		jPanel.add(newListAcceptButton);
+		uchwyt.add(newListAcceptButton);
 		
 		newListCancelButton = new JButton("Anuluj");
 		newListCancelButton.setBounds(400, 240, 200, 30);
 		newListCancelButton.addActionListener(this);
-		jPanel.add(newListCancelButton);
+		uchwyt.add(newListCancelButton);
 	}
 	
 	public void VisibleNewListForm(boolean b)
@@ -110,7 +109,7 @@ public class NewProject implements ActionListener{
 		{	
 			VisibleNewListForm(true);
 
-			SwingUtilities.updateComponentTreeUI(jPanel);
+			SwingUtilities.updateComponentTreeUI(uchwyt);
 		}
 		
 		 if (e.getSource() == newListAcceptButton)
@@ -121,7 +120,7 @@ public class NewProject implements ActionListener{
 				newListFormDesc.setText("");
 				currentProject.addNewList(tempList);
 				
-				SwingUtilities.updateComponentTreeUI(jPanel);
+				SwingUtilities.updateComponentTreeUI(uchwyt);
 		}
 		
 		if (e.getSource() == newListCancelButton)
@@ -130,7 +129,7 @@ public class NewProject implements ActionListener{
 			newListFormName.setText("");
 			newListFormDesc.setText("");
 			
-			SwingUtilities.updateComponentTreeUI(jPanel);
+			SwingUtilities.updateComponentTreeUI(uchwyt);
 		}
 	}
 }
