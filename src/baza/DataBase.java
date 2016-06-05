@@ -19,6 +19,11 @@ public class DataBase //implements IDataBase
 	 static final String User ="sql8122359";
 	 static final String Password = "IyKN3AHaZm";
 	private static DataBase instanceBase = null;
+	
+	protected static String projects[][];
+	protected static  String users[][];
+	protected static String lists[][];
+	
 	 public DataBase()
 		{
 			Connect();
@@ -45,9 +50,7 @@ public class DataBase //implements IDataBase
 		   }catch(Exception e){
 		      //Handle errors for Class.forName
 		      e.printStackTrace();
-		   
-		   }
-		
+		   } 	
 	 }
 	public void Disconnect()
 	{
@@ -66,9 +69,7 @@ public class DataBase //implements IDataBase
 	
 	public void CreateTableUsers() 
 	{
-
 		try{  
-			
 		      stmt=conn.createStatement();
 		    stmt.executeUpdate("Drop Table users;");
 		      String sql = "Create table users(ID VARCHAR(3) NOT NULL,surname VARCHAR(50), name VARCHAR(50), password VARCHAR(50), email VARCHAR(50));";
@@ -105,7 +106,7 @@ public class DataBase //implements IDataBase
 
 		try{
 		      
-		      conn.createStatement().executeQuery("Create table Users(ID integer NOT NULL AUTO_INCREMENT PRIMARY KEY,surname VARCHAR2(15), name VARCHAR2(10),"
+		      conn.createStatement().executeQuery("Create table users(ID integer NOT NULL AUTO_INCREMENT PRIMARY KEY,surname VARCHAR2(15), name VARCHAR2(10),"
 						+ "password VARCHAR2(10), email VARCHAR2(20)");
 			
 		 }catch(SQLException se){
@@ -122,7 +123,7 @@ public class DataBase //implements IDataBase
 
 		try{
 		      
-		      conn.createStatement().executeQuery("Create table Users(ID integer NOT NULL AUTO_INCREMENT PRIMARY KEY,surname VARCHAR2(15), name VARCHAR2(10),"
+		      conn.createStatement().executeQuery("Create table users(ID integer NOT NULL AUTO_INCREMENT PRIMARY KEY,surname VARCHAR2(15), name VARCHAR2(10),"
 						+ "password VARCHAR2(10), email VARCHAR2(20)");
 			
 		 }catch(SQLException se){
@@ -133,12 +134,6 @@ public class DataBase //implements IDataBase
 		      e.printStackTrace();
 		   }
 	}
-	
-	
-	
-	
-	
-	
 	
 public void AddNaSztywno()
 {
@@ -170,7 +165,7 @@ public void AddNaSztywno()
 	{
 		try{
 		      
-		      conn.createStatement().executeQuery("Insert Into Users Values("+Surname+","+Name+","+Password+","+Email+")");
+		      conn.createStatement().executeQuery("Insert Into users Values("+Surname+","+Name+","+Password+","+Email+")");
 			
 		 }catch(SQLException se){
 		      //Handle errors for JDBC
@@ -202,7 +197,7 @@ public void AddNaSztywno()
 		//String[] Users= new String[2];
 		String[] User = new String[3];
 		try{
-		 	  String sql = "SELECT * FROM Users WHERE email LIKE " + "'%"+ Login + "%'";
+		 	  String sql = "SELECT * FROM users WHERE email LIKE " + "'%"+ Login + "%'";
 		 	  	rs = stmt.executeQuery(sql);
 		 	  	rs.next();
 		 	  	  User[0] = rs.getString("surname");

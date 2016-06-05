@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import baza.Login;
+import projekt.MyProjects;
 import projekt.NewProject;
 
 public class Menu extends JFrame implements ActionListener {
@@ -401,6 +402,16 @@ public class Menu extends JFrame implements ActionListener {
         	
 
         	
+        	SwingUtilities.updateComponentTreeUI(this);
+        }
+        if (e.getSource() == lista){
+        	setContentPane(new JLabel(new ImageIcon("images/back2.png")));
+        	add(powrot2);
+        	remove(powrot);
+        	remove(lista);
+        	remove(nowy);
+        	remove(harmonogram);
+        	new MyProjects(this);
         	SwingUtilities.updateComponentTreeUI(this);
         }
 

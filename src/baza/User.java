@@ -30,7 +30,7 @@ public class User {
 		return email;
 	}
 
-	protected ArrayList<CProject> getUserProjects() {
+	public ArrayList<CProject> getUserProjects() {
 		return userProjects;
 	}
 

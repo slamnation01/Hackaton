@@ -12,7 +12,7 @@ public final class LoggedUser extends Login{
 		this.surname = daneUzytkownika[0];
 		this.email = daneUzytkownika[1];
 		this.userProjects = getUserProjects();
-		this.currentProject = null;
+		//this.currentProject = null;
 	}
 	
 	public static LoggedUser getInstance(){

@@ -20,7 +20,7 @@ public class CProject implements IProject{
 		this.projectManagersArray.add(user);
 		this.projectDescription = null;
 		this.projectUsersArray = null;
-		this.projectListsArray = null;
+		//this.projectListsArray = null;
 	}
 	
 	public String getProjectName() {
@@ -89,7 +89,7 @@ public class CProject implements IProject{
 	@Override
 	public void addNewList(String listName, String listDescription, LoggedUser listCreator) {
 
-		CList newList = new CList(listName, listDescription, listCreator);
+		CList newList = new CList(listName, listDescription);
 		projectListsArray.add(newList);
 		
 	}
@@ -134,4 +134,10 @@ public class CProject implements IProject{
 		
 		projectListsArray.add(list);
 	}
+
+	/*@Override
+	public void addNewList(CList list) {
+		
+		projectListsArray.add(list);
+	}*/
 }

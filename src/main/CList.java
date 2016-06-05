@@ -18,11 +18,11 @@ public class CList implements IList{
 	
 	//Konstruktor
 	
-	public CList(String listName, String listDescription, User User)
+	public CList(String listName, String listDescription)//, User User)
 	{
 		this.listName = listName;
 		this.listDescription = listDescription;
-		this.listOwner = User;
+		//this.listOwner = User;
 		this.archivized = false;
 		this.listTasksArray = null;
 		this.done = false;				
@@ -82,14 +82,13 @@ public class CList implements IList{
 	
 	//Metody
 	
-	/*
-	@Override
-	public CList createNewList(String listName, String listDescription, CUser listCreator) {
+	
+	public CList createNewList(String listName, String listDescription){ //CUser listCreator) {
 
-		CList newList = new CList(listName, listDescription, listCreator);
+		CList newList = new CList(listName, listDescription);//, listCreator);
 		
 		return newList;
-	}*/
+	}
 
 	@Override
 	public void archiveList(boolean archivized) {

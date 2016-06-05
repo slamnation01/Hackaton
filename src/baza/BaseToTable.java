@@ -3,12 +3,6 @@ package baza;
 import java.sql.SQLException;
 
 public class BaseToTable extends DataBase {
-	
-	String projects[][];
-	String users[][];
-	String lists[][];
-	
-	
 	public String[][] ProjectsToTable()
 	{
       try{

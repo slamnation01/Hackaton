@@ -1,5 +1,7 @@
 package projekt;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +14,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+
+import baza.LoggedUser;
 import baza.User;
 import main.CList;
 
@@ -21,7 +25,7 @@ public class NewProject implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	protected JLabel projectName;
+	protected JLabel projectName, listName;
 	protected JButton createNewList, newListAcceptButton, newListCancelButton;
 	protected String projectNameString;
 	protected JTextField newListFormName;
@@ -33,16 +37,40 @@ public class NewProject implements ActionListener{
 	public User loggedUser = new User("Jan", "Kowalski", "jankowal@gmail.com");
 	
 	//FIX ME: pobieranie i tworzenie projektow ma byc w innym miejscu
+	//public CProject currentProject = new CProject("Projekt1", loggedUser);
 	public CProject currentProject = new CProject("Projekt1", loggedUser);
 	public CList tempList;
 	
+	
 	public NewProject(JFrame uchwyt)
-	{
+	{		
 		this.uchwyt = uchwyt;
-        loggedUser.setCurrentProject(currentProject);       
+		//currentProject = LoggedUser.getInstance().getCurrentProject();
+		//System.out.println(currentProject);
+        loggedUser.setCurrentProject(currentProject);   
+        //projectNameString = loggedUser.getCurrentProject().getProjectName();
         projectNameString = loggedUser.getCurrentProject().getProjectName();
         
+        CList test = new CList("Lista1", "opis");
+        currentProject.addNewList(test);
+        //currentProject.addNewList("nazwa", "opis");
+        System.out.println(currentProject.getProjectListsArray());
+        
+        //System.out.println(tempList);
+        /*tempList = new CList("Lista12", "opis", loggedUser);
+        currentProject.addNewList(tempList);*/
+        
         DrawMainScreen();
+        
+        for (CList tempList : currentProject.getProjectListsArray()) {
+			int i = 0;
+        	DrawListName(tempList, i);
+        	i++;
+		}
+        
+        
+        
+        SwingUtilities.updateComponentTreeUI(uchwyt);
 	}
 	
 	public void DrawMainScreen()
@@ -60,6 +88,14 @@ public class NewProject implements ActionListener{
         projectName = new JLabel(projectNameString);        
         projectName.setBounds(100, 30, 400, 30);       
         uchwyt.add(projectName);	
+	}
+	
+	public void DrawListName(CList tempList, int i)
+	{
+		listName = new JLabel(tempList.getListName());
+		listName.setBounds(100, 280 + i*40, 400, 30);
+		listName.setForeground(Color.WHITE);
+		uchwyt.add(listName);
 	}
 	
 	public void DrawListButton()
@@ -115,12 +151,13 @@ public class NewProject implements ActionListener{
 		 if (e.getSource() == newListAcceptButton)
 			{
 				VisibleNewListForm(false);
-				tempList = new CList(newListFormName.getText(), newListFormDesc.getText(), loggedUser);
+				tempList = new CList(newListFormName.getText(), newListFormDesc.getText());
 				newListFormName.setText("");
 				newListFormDesc.setText("");
 				currentProject.addNewList(tempList);
 				
 				SwingUtilities.updateComponentTreeUI(uchwyt);
+				uchwyt.repaint();
 		}
 		
 		if (e.getSource() == newListCancelButton)
